@@ -1,4 +1,2 @@
-__pycache__/
-.venv/
-.pytest_cache/
-htmlcov/
+__pycache__
+viikko1/varasto
