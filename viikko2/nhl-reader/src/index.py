@@ -5,30 +5,14 @@ def main():
     url = "https://studies.cs.helsinki.fi/nhlstats/2024-25/players"
     response = requests.get(url).json()
 
-    print("JSON-muotoinen vastaus:")
-    print(response)
+    players = [Player(p) for p in response]
 
-    players = []
+    finnish_players = [p for p in players if p.nationality == "FIN"]
+    finnish_players.sort(key=lambda p: p.goals + p.assists, reverse=True)
 
-    for player_dict in response:
-        player = Player(player_dict)
-        players.append(player)
-
-    print("Oliot:")
-
-    for player in players:
-        print(player)
-
-    print("\nPlayers from FIN:")
-    
-    finnish_players = []
-    for player in players:
-        if player.nationality == "FIN":
-            finnish_players.append(player)
-    
+    print("Players from FIN:")
     for player in finnish_players:
         print(player)
-
-
+        
 if __name__ == "__main__":
     main()
