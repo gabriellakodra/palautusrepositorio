@@ -9,7 +9,7 @@ def get_user_inputs():
     return nationality, season
 
 
-def get_players(nationality, season):
+def get_players(nationality):
     url = "https://studies.cs.helsinki.fi/nhlstats/2024-25/players"
     reader = PlayerReader(url)
     stats = PlayerStats(reader)
