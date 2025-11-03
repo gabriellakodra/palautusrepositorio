@@ -35,7 +35,7 @@ def populate_table(table, players):
 def main():
     console = Console()
     nationality, season = get_user_inputs()
-    players = get_players(nationality, season)
+    players = get_players(nationality)
     table = create_table(nationality, season)
     populate_table(table, players)
     console.print(table)
