@@ -16,5 +16,5 @@ print(f"{x} - {y} = {erotus(x, y)}")
 logger("lopetetaan ohjelma")
 print("goodbye!")
 print("testi")
-
+print("kolmas testi")
 
