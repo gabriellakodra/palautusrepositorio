@@ -1,4 +1,5 @@
 # tehdään alussa importit
+# laitetaan joku muutos tähän testiksi
 
 from logger import logger
 from summa import summa
