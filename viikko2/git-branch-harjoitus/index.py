@@ -4,6 +4,8 @@ from logger import logger
 from summa import summa
 from erotus import erotus
 
+print("toinen testi")
+
 logger("aloitetaan ohjelma")
 
 x = int(input("luku 1: "))
