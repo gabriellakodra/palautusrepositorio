@@ -32,14 +32,6 @@ Login Should Fail With Message
     Login Page Should Be Open
     Page Should Contain  ${message}
 
-Set Username
-    [Arguments]  ${username}
-    Input Text  username  ${username}
-
-Set Password
-    [Arguments]  ${password}
-    Input Password  password  ${password}
-
 *** Keywords ***
 Reset Application Create User And Go To Login Page
     Reset Application
