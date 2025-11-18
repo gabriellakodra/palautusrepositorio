@@ -10,6 +10,8 @@ class Kauppa:
 
     def aloita_asiointi(self):
         self._ostoskori = Ostoskori()
+        self._viitegeneraattori._seuraava = 0
+
 
     def poista_korista(self, id):
         tuote = self._varasto.hae_tuote(id)
