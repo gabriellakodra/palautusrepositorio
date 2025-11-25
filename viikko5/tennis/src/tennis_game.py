@@ -8,8 +8,6 @@ class TennisGame:
     ADVANTAGE_THRESHOLD = 1
     WIN_THRESHOLD = 2
 
-    PLAYER1_INDEX = 1
-    PLAYER2_INDEX = 2
 
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
