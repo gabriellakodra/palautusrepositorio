@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kivi-Paperi-Sakset</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #ffb3d9 0%, #ffd6e8 50%, #ffe6f0 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+        max-width: 600px;
+        width: 100%;
+      }
+
+      h1 {
+        text-align: center;
+        color: #ff69b4;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 20px;
+        font-size: 1.1em;
+      }
+
+      .rules {
+        text-align: center;
+        color: #888;
+        margin-bottom: 40px;
+        font-size: 0.95em;
+        font-style: italic;
+      }
+
+      .game-modes {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .game-mode {
+        background: linear-gradient(135deg, #ff69b4 0%, #ff85c1 100%);
+        border: none;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        font-size: 1.2em;
+        font-weight: 600;
+      }
+
+      .game-mode:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+      }
+
+      .game-mode:active {
+        transform: translateY(-1px);
+      }
+
+      .emoji {
+        font-size: 1.5em;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🪨 📄 ✂️</h1>
+      <h1>Kivi-Paperi-Sakset</h1>
+      <p class="subtitle">Valitse pelitila</p>
+      <p class="rules">Ensimmäinen 3 voittoon päässyt pelaaja voittaa pelin!</p>
+
+      <form action="/new_game" method="POST" class="game-modes">
+        <button type="submit" name="game_type" value="a" class="game-mode">
+          <span class="emoji">👥</span>
+          Pelaaja vs Pelaaja
+        </button>
+        <button type="submit" name="game_type" value="b" class="game-mode">
+          <span class="emoji">🤖</span>
+          Pelaaja vs Tekoäly
+        </button>
+        <button type="submit" name="game_type" value="c" class="game-mode">
+          <span class="emoji">🧠</span>
+          Pelaaja vs Parannettu Tekoäly
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

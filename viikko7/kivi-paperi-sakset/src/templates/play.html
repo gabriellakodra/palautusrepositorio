@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kivi-Paperi-Sakset - {{ mode_name }}</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #ffb3d9 0%, #ffd6e8 50%, #ffe6f0 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .header {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+        text-align: center;
+      }
+
+      .header h1 {
+        color: #ff69b4;
+        margin-bottom: 10px;
+      }
+
+      .mode-name {
+        color: #666;
+        font-size: 1.2em;
+      }
+
+      .game-area {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+        margin-bottom: 20px;
+      }
+
+      .players {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .player {
+        text-align: center;
+      }
+
+      .player h2 {
+        color: #ff69b4;
+        margin-bottom: 20px;
+      }
+
+      .choices {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .choice-btn {
+        width: 80px;
+        height: 80px;
+        border: 3px solid #ff69b4;
+        background: white;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 2.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .choice-btn:hover {
+        background: #ff69b4;
+        transform: scale(1.1);
+      }
+
+      .choice-btn.selected {
+        background: #ff69b4;
+        transform: scale(1.05);
+      }
+
+      .score-board {
+        background: #ffe6f0;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .score-board h3 {
+        text-align: center;
+        color: #ff69b4;
+        margin-bottom: 15px;
+      }
+
+      .scores {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        text-align: center;
+      }
+
+      .score-item {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      .score-label {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+      }
+
+      .score-value {
+        font-size: 2em;
+        font-weight: bold;
+        color: #ff69b4;
+      }
+
+      .result-display {
+        background: #ffe6f0;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        min-height: 100px;
+        display: none;
+      }
+
+      .result-display.show {
+        display: block;
+      }
+
+      .result-moves {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 3em;
+      }
+
+      .result-text {
+        text-align: center;
+        font-size: 1.2em;
+        color: #333;
+        font-weight: bold;
+      }
+
+      .controls {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #ff69b4 0%, #ff85c1 100%);
+        color: white;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+      }
+
+      .btn-secondary {
+        background: #6c757d;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background: #5a6268;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 768px) {
+        .players {
+          grid-template-columns: 1fr;
+        }
+
+        .scores {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🪨 📄 ✂️ Kivi-Paperi-Sakset</h1>
+        <p class="mode-name">{{ mode_name }}</p>
+      </div>
+
+      <div class="game-area">
+        <div class="score-board">
+          <h3>Pelitilanne</h3>
+          <div class="scores">
+            <div class="score-item">
+              <div class="score-label">Pelaaja 1</div>
+              <div class="score-value" id="score1">0</div>
+            </div>
+            <div class="score-item">
+              <div class="score-label">Tasapelit</div>
+              <div class="score-value" id="scoreTie">0</div>
+            </div>
+            <div class="score-item">
+              <div class="score-label">Pelaaja 2</div>
+              <div class="score-value" id="score2">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-display" id="resultDisplay">
+          <div class="result-moves">
+            <span id="player1Move"></span>
+            <span>VS</span>
+            <span id="player2Move"></span>
+          </div>
+          <div class="result-text" id="resultText"></div>
+        </div>
+
+        <div class="players">
+          <div class="player">
+            <h2>Pelaaja 1</h2>
+            <div class="choices">
+              <button class="choice-btn" data-choice="k" data-player="1">🪨</button>
+              <button class="choice-btn" data-choice="p" data-player="1">📄</button>
+              <button class="choice-btn" data-choice="s" data-player="1">✂️</button>
+            </div>
+          </div>
+
+          <div class="player" id="player2Area">
+            <h2>Pelaaja 2</h2>
+            <div class="choices">
+              <button class="choice-btn" data-choice="k" data-player="2">🪨</button>
+              <button class="choice-btn" data-choice="p" data-player="2">📄</button>
+              <button class="choice-btn" data-choice="s" data-player="2">✂️</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-primary" id="playBtn" disabled>Pelaa</button>
+          <button class="btn btn-secondary" id="endBtn">Lopeta peli</button>
+          <a href="/reset" class="btn btn-secondary">Päävalikko</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const gameType = "{{ game_type }}"
+      let player1Choice = null
+      let player2Choice = null
+
+      const choiceEmojis = {
+        k: "🪨",
+        p: "📄",
+        s: "✂️",
+      }
+
+      const choiceNames = {
+        k: "Kivi",
+        p: "Paperi",
+        s: "Sakset",
+      }
+
+      // Hide player 2 area if playing against AI
+      if (gameType !== "a") {
+        document.getElementById("player2Area").style.display = "none"
+      }
+
+      // Handle choice selection
+      document.querySelectorAll(".choice-btn").forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const choice = this.dataset.choice
+          const player = this.dataset.player
+
+          // Remove selection from other buttons of same player
+          document.querySelectorAll(`.choice-btn[data-player="${player}"]`).forEach((b) => {
+            b.classList.remove("selected")
+          })
+
+          // Select this button
+          this.classList.add("selected")
+
+          if (player === "1") {
+            player1Choice = choice
+          } else {
+            player2Choice = choice
+          }
+
+          // Enable play button if appropriate choices are made
+          if (gameType === "a") {
+            document.getElementById("playBtn").disabled = !(player1Choice && player2Choice)
+          } else {
+            document.getElementById("playBtn").disabled = !player1Choice
+          }
+        })
+      })
+
+      // Handle play button
+      document.getElementById("playBtn").addEventListener("click", async function () {
+        if (!player1Choice) return
+
+        const data = {
+          pelaaja1_siirto: player1Choice,
+          pelaaja2_siirto: player2Choice,
+        }
+
+        try {
+          const response = await fetch("/make_move", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+
+          const result = await response.json()
+
+          if (result.error) {
+            alert(result.error)
+            if (result.game_over) {
+              window.location.href = "/reset"
+            }
+            return
+          }
+
+          // Update scores
+          document.getElementById("score1").textContent = result.ekan_pisteet
+          document.getElementById("score2").textContent = result.tokan_pisteet
+          document.getElementById("scoreTie").textContent = result.tasapelit
+
+          // Show result
+          document.getElementById("player1Move").textContent = choiceEmojis[result.pelaaja1_siirto]
+          document.getElementById("player2Move").textContent = choiceEmojis[result.pelaaja2_siirto]
+
+          let resultText = `${choiceNames[result.pelaaja1_siirto]} vs ${
+            choiceNames[result.pelaaja2_siirto]
+          } - `
+
+          if (result.pelaaja1_siirto === result.pelaaja2_siirto) {
+            resultText += "Tasapeli!"
+          } else if (
+            (result.pelaaja1_siirto === "k" && result.pelaaja2_siirto === "s") ||
+            (result.pelaaja1_siirto === "s" && result.pelaaja2_siirto === "p") ||
+            (result.pelaaja1_siirto === "p" && result.pelaaja2_siirto === "k")
+          ) {
+            resultText += "Pelaaja 1 voittaa!"
+          } else {
+            resultText += "Pelaaja 2 voittaa!"
+          }
+
+          document.getElementById("resultText").textContent = resultText
+          document.getElementById("resultDisplay").classList.add("show")
+
+          // Check if game is over (someone won 3 times)
+          if (result.game_over && result.winner) {
+            alert(`🎉 ${result.winner} voitti pelin!\n\n${result.tilanne}`)
+            window.location.href = "/reset"
+            return
+          }
+
+          // Reset choices
+          document.querySelectorAll(".choice-btn").forEach((btn) => {
+            btn.classList.remove("selected")
+          })
+          player1Choice = null
+          player2Choice = null
+          document.getElementById("playBtn").disabled = true
+        } catch (error) {
+          console.error("Error:", error)
+          alert("Virhe pelin aikana")
+        }
+      })
+
+      // Handle end game button
+      document.getElementById("endBtn").addEventListener("click", async function () {
+        if (confirm("Haluatko varmasti lopettaa pelin?")) {
+          try {
+            const response = await fetch("/end_game", {
+              method: "POST",
+            })
+
+            const result = await response.json()
+
+            alert(`Peli päättyi!\n\n${result.tilanne}`)
+            window.location.href = "/reset"
+          } catch (error) {
+            console.error("Error:", error)
+            window.location.href = "/reset"
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
